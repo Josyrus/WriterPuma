@@ -1,6 +1,6 @@
 [
   {
-    "file": "ui/core.c",
+    "file": "src/main.c",
     "arguments": [
       "/usr/bin/gcc",
       "-I/usr/include/gtk-4.0",
@@ -28,11 +28,11 @@
       "-Wall",
       "-std=c11",
       "-c",
-      "ui/core.c",
+      "src/main.c",
       "-o",
-      "build/core.o"
+      "build/main.o"
     ],
     "directory": "/home/josyrus/Documents/Code/C/WriterPuma",
-    "output": "build/core.o"
+    "output": "build/main.o"
   }
 ]

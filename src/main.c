@@ -1,6 +1,5 @@
-#include "../include/core.h"
 #include <gtk/gtk.h>
-#include <locale.h>
+#include <core.h>
 
 int main(int argc, char** argv)
 {

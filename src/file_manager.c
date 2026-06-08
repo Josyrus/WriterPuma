@@ -1,17 +1,11 @@
-#include "../include/file_manager.h"
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
+#include "file_manager.h"
 #define MAX_FILES 1
 #define TRUE_AUTOSAVE true
 #define FALSE_AUTOSAVE false
 
-void create_file(File_puma* puma_tmp)
+void create_file(file_puma* puma_tmp)
 {
-
-    if (puma_tmp->path_file) {
+    if (!puma_tmp->path_file) {
         save_file(puma_tmp, TRUE_AUTOSAVE);
     } else {
         fprintf(stdout, "Creating file at: %s\n", puma_tmp->path_file);
@@ -19,7 +13,7 @@ void create_file(File_puma* puma_tmp)
     }
 }
 
-void save_file(File_puma* puma_tmp, bool autosave)
+void save_file(file_puma* puma_tmp, bool autosave)
 {
     size_t size;
     size = strlen(puma_tmp->name_file);
@@ -32,7 +26,11 @@ void save_file(File_puma* puma_tmp, bool autosave)
         puma_tmp->name_file = (char*)malloc(size);
         snprintf(puma_tmp->name_file, size, "%s%s", prefix, date);
     }
-    fopen(puma_tmp->path_file, "a");
+    puma_tmp->file = fopen(puma_tmp->path_file, "a");
+    if (!puma_tmp->file)
+    {
+        fprintf(stderr, "Error abriendo archivo: %s\n", puma_tmp->path_file);
+    }
 }
 
 void remove_file(const char* path)
@@ -44,40 +42,46 @@ void remove_file(const char* path)
     remove(path);
 }
 
-static File_puma* create_file_puma(char* path)
+static file_puma* create_file_puma(char* path)
 {
-    File_puma* tmp = (File_puma*)calloc(MAX_FILES, sizeof(File_puma));
+    file_puma* tmp = (file_puma*)calloc(MAX_FILES, sizeof(file_puma));
     if (tmp) {
         fprintf(stdout, "Creating puma file...");
         return tmp;
     }
+    tmp->path_file = path;
     return NULL;
 }
-static void destroy_file_puma(File_puma** tmp)
+static void destroy_file_puma(file_puma** tmp)
 {
     free((*tmp)->name_file);
     free((*tmp)->path_file);
+    if(!(*tmp)->file)
+    {
     fclose((*tmp)->file);
+    free((*tmp)->file);
+    (*tmp)->file=NULL;
+    }
     free(*tmp);
     tmp = NULL;
 }
-void set_path_file(File_puma* puma_tmp, char* path)
+void set_path_file(file_puma* puma_tmp, char* path)
 {
-    size_t size = sizeof(path);
-    puma_tmp->path_file = (char*)malloc(size) + 1;
-    snprintf(puma_tmp->name_file, size, "%s", path);
+    size_t size = sizeof(path)+1;
+    puma_tmp->path_file = (char*)malloc(size);
+    snprintf(puma_tmp->path_file, size, "%s", path);
 }
-char* get_path_file(File_puma* puma_tmp)
+char* get_path_file(file_puma* puma_tmp)
 {
     return puma_tmp->path_file;
 }
-void set_name__file(File_puma* puma_tmp, char* name_file)
+void set_name__file(file_puma* puma_tmp, char* name_file)
 {
     size_t size = sizeof(name_file);
     puma_tmp->path_file = (char*)malloc(size) + 1;
     snprintf(puma_tmp->name_file, size, "%s", name_file);
 }
-char* get_name__file(File_puma* puma_tmp)
+char* get_name__file(file_puma* puma_tmp)
 {
     return puma_tmp->path_file;
 }

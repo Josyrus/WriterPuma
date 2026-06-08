@@ -3,7 +3,7 @@ CFLAGS  = $(shell pkg-config --cflags gtk4) -Iinclude -Wall -std=c11
 LIBS    = $(shell pkg-config --libs gtk4)
 OBJDIR  = build
 
-OBJS = $(OBJDIR)/main.o $(OBJDIR)/file_manager.o $(OBJDIR)/core.o
+OBJS = $(OBJDIR)/main.o $(OBJDIR)/file_manager.o $(OBJDIR)/core.o $(OBJDIR)/open_puma_ui_controller.o
 
 
 main: $(OBJS)
@@ -20,6 +20,9 @@ $(OBJDIR)/file_manager.o: src/file_manager.c | $(OBJDIR)
 
 $(OBJDIR)/core.o: ui/core.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c ui/core.c -o $(OBJDIR)/core.o
+
+$(OBJDIR)/open_puma_ui_controller.o: src/open_puma_ui_controller.c | $(OBJDIR)
+	$(CC) $(CFLAGS) -c src/open_puma_ui_controller.c -o $(OBJDIR)/open_puma_ui_controller.o
 
 compile_commands.json:
 	bear -- make main
