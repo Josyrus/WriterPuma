@@ -18,3 +18,6 @@ CompileFlags:
     - "-I/usr/include/graphene-1.0"
     - "-I/usr/lib/x86_64-linux-gnu/graphene-1.0/include"
     - "-pthread"
+Diagnostics:
+  ClangTidy:
+    Remove: [misc-include-cleaner]

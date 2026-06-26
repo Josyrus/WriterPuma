@@ -1,4 +1,6 @@
 build/
-compile_commands.json
-.vscode/
+build.zip
+*.o
+*.a
 .cache/
+.vscode/

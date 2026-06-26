@@ -1,9 +1,17 @@
-#include <open_puma_ui_controller.h>
-
+#include <core.h>
 #define _(STRING) gettext(STRING)
+
+
 /*|Archive|View|about|Help...|*/
+
+void on_destroy(GObject *obj, gpointer data) {
+ }
 void on_activate(GtkApplication* app, gpointer data)
 {
+    open_puma_context_app *ctx = malloc(sizeof(open_puma_context_app));
+    ctx->app = app;
+    ctx->file = malloc(sizeof(FilePuma *));
+    *ctx->file = NULL;
     // Window
     GtkWidget* window = gtk_application_window_new(app);
     gtk_window_set_title(GTK_WINDOW(window), "WriterPuma");
@@ -47,7 +55,7 @@ void on_activate(GtkApplication* app, gpointer data)
     gtk_text_buffer_set_text(text_view_label_buffer, "", -1);
     gtk_box_append(GTK_BOX(box_background), box_buttons_container);
     gtk_box_append(GTK_BOX(box_background), tex_view_label);
-
+    ctx->buffer = text_view_label_buffer;
     //build UI buttons 
     gtk_menu_button_set_popover(GTK_MENU_BUTTON(menu_button_file), popover_file);
     gtk_menu_button_set_popover(GTK_MENU_BUTTON(menu_button_view),popover_view);
@@ -56,15 +64,15 @@ void on_activate(GtkApplication* app, gpointer data)
     gtk_box_append(GTK_BOX(box_buttons_container),button_about);
     gtk_box_append(GTK_BOX(box_buttons_container),button_help);
     //buttons logic
-    g_signal_connect(button_save,"clicked",G_CALLBACK(writter_puma_save_button_on_click),NULL);
-    g_signal_connect(button_save_as,"clicked",G_CALLBACK(writter_puma_save_as_button_on_click),NULL);
-    g_signal_connect(button_open,"clicked",G_CALLBACK(writter_puma_open_button_on_click),NULL);
+    g_signal_connect(button_save,"clicked",G_CALLBACK(writter_puma_save_button_on_click),ctx);
+    g_signal_connect(button_save_as,"clicked",G_CALLBACK(writter_puma_save_as_button_on_click),ctx);
+    g_signal_connect(button_open,"clicked",G_CALLBACK(writter_puma_open_button_on_click),ctx);
     g_signal_connect(button_search_word,"clicked",G_CALLBACK(writter_puma_search_word_button_on_click),NULL);
     g_signal_connect(button_search_and_replace,"clicked",G_CALLBACK(writter_puma_button_search_and_replace_button_on_click),NULL);
     g_signal_connect(button_about,"clicked",G_CALLBACK(writter_puma_about_button_on_click),NULL);
     g_signal_connect(button_help,"clicked",G_CALLBACK(writter_puma_help_button_on_click),NULL);
-    //Create new tmp file for 
-
+    //destroy file puma
+    g_signal_connect(app, "shutdown", G_CALLBACK(writter_puma_destroy_files_app), ctx);
     // Window open
     gtk_window_set_child(GTK_WINDOW(window), box_background);
     gtk_window_present(GTK_WINDOW(window));

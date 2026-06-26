@@ -1,5 +1,5 @@
 CC      = gcc
-CFLAGS  = $(shell pkg-config --cflags gtk4) -Iinclude -Wall -std=c11
+CFLAGS = $(shell pkg-config --cflags gtk4) -Iinclude -Wall -std=c11 -g3 -O0
 LIBS    = $(shell pkg-config --libs gtk4)
 OBJDIR  = build
 
