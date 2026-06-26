@@ -1,6 +1,5 @@
 # WriterPuma
-
-A lightweight, native text editor built with GTK4 and C, designed for Wayland/Hyprland environments.
+A lightweight, native text editor built with GTK4 and C.
 
 ---
 
@@ -23,11 +22,18 @@ Make sure you have the following installed:
 ```bash
 # Arch Linux
 sudo pacman -S gtk4 gcc make
+
+# Ubuntu / Debian
+sudo apt install libgtk-4-dev gcc make
 ```
 
 Optional (for development with LSP support):
 ```bash
+# Arch Linux
 sudo pacman -S clang clangd
+
+# Ubuntu / Debian
+sudo apt install clangd
 ```
 
 ---
@@ -75,7 +81,6 @@ WriterPuma/
 
 - GCC 12+
 - GTK 4.x
-- Wayland (Hyprland recommended, but not required)
 
 ---
 
